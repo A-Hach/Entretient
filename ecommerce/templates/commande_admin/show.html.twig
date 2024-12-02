@@ -1,0 +1,75 @@
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="example-wrapper">
+    <h1>Detail of the order #{{ commande.id }}</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Order number</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ commande.id }}</td>
+                <td>{{ commande.user.name }} || {{ commande.user.email }}</td>
+                <td>{{ commande.date | date('Y-m-d') }}</td>
+                <td>{{ commande.getTotal() }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>Items</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in commandeItems %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.unitPrice * item.quantity }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('app_commandes_admin') }}">Return to the list</a>
+</div>
+<style>
+    .example-wrapper {
+        width: 100%;
+        max-width: 800px;
+        padding: 20px;
+        margin: 0 auto;
+    }
+
+    .example-wrapper h1 {
+        text-align: center;
+    }
+
+    .example-wrapper table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .example-wrapper th {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .example-wrapper th, .example-wrapper td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+</style>
+{% endblock %}
+

@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProductAdminController!{% endblock %}
+
+{% block body %}
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+</style>
+
+<h1>Product List</h1>
+<a href="{{ path('app_produits_admin_new') }}">Add a new product</a>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Actions</th>
+    </tr>
+    {% for produit in produits %}
+        <tr>
+            <td>{{ produit.id }}</td>
+            <td>{{ produit.name }}</td>
+            <td>{{ produit.price }}</td>
+            <td>{{ produit.description }}</td>
+            <td>
+                <a href="{{ path('app_produits_admin_edit', {'id': produit.id}) }}">Edit</a>
+                <a href="{{ path('app_produits_admin_delete', {'id': produit.id}) }}">Delete</a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}

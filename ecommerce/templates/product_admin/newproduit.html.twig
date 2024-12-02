@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create a new product{% endblock %}
+
+{% block body %}
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+</style>
+
+<h1>Create a new product</h1>
+<form action="{{ path('app_produits_admin_new') }}" method="post">
+    <table>
+        <tr>
+            <th>Name</th>
+            <td><input type="text" name="name"  /></td>
+        </tr>
+        <tr>
+            <th>Price</th>
+            <td><input type="text" name="price"  /></td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td><textarea name="description"></textarea></td>
+        </tr>
+        <tr>
+            <th>Categorie</th>
+            <td>
+                <select name="categorie">
+                    {% for categorie in categories %}
+                        <option value="{{ categorie.id }}">{{ categorie.name }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="submit">Create</button>
+            </td>
+        </tr>
+    </table>
+</form>
+{% endblock %}
+
+

@@ -1,0 +1,20 @@
+<h1>Your Cart</h1>
+<a href="{{ path('app_product') }}">Return to Home</a>
+<ul>
+    {% for item in cart %}
+        <li>
+            {{ item.product.name }} - ${{ item.product.price }}
+            <form action="{{ path('cart_remove', {'id': item.product.id}) }}" method="POST">
+                <button type="submit">Delete</button>
+            </form>
+            <form action="{{ path('cart_modify', {'id': item.product.id}) }}" method="POST">
+                <input type="number" name="quantity" value="{{ item.quantity }}">
+                <button type="submit">Modify</button>
+            </form>
+            <p>Total: ${{ item.quantity * item.product.price }}</p>
+        </li> 
+    {% endfor %}
+</ul>
+<p>Total for cart: ${{ cart|reduce((a, b) => a + b.quantity * b.product.price, 0) }}</p>
+<a href="{{ path('checkout') }}">Proceed to Checkout</a>
+

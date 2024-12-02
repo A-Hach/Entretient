@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        {% block stylesheets %}
+        {% endblock %}
+
+        {% block javascripts %}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
+    </head>
+<nav class="navbar">
+    <ul class="nav-menu">
+        <li class="nav-item"><a href="{{ path('app_product') }}" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="{{ path('app_produits_admin') }}" class="nav-link">Admin Produit</a></li>
+        <li class="nav-item"><a href="{{ path('app_categories_admin') }}" class="nav-link">Admin Categorie</a></li>
+        <li class="nav-item"><a href="{{ path('app_users_admin') }}" class="nav-link">Admin Users</a></li>
+        <li class="nav-item"><a href="{{ path('app_commandes_admin') }}" class="nav-link">Admin Commandes</a></li>
+    </ul>
+</nav>
+
+<style>
+    .navbar {
+        background-color: #333;
+        overflow: hidden;
+    }
+
+    .nav-menu {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    .nav-item {
+        flex: 1;
+    }
+
+    .nav-link {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+    .nav-link:hover {
+        background-color: #575757;
+    }
+</style>
+    <body>
+    
+        {% block body %}{% endblock %}
+    </body>
+</html>

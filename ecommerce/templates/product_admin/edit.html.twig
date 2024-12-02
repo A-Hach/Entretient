@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit product {{ produit.name }}{% endblock %}
+
+{% block body %}
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+</style>
+
+<h1>Edit product {{ produit.name }}</h1>
+<form action="{{ path('app_produits_admin_edit', {'id': produit.id}) }}" method="post">
+    <table>
+        <tr>
+            <th>Id</th>
+            <td><input type="text" name="id" value="{{ produit.id }}" /></td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td><input type="text" name="name" value="{{ produit.name }}" /></td>
+        </tr>
+        <tr>
+            <th>Price</th>
+            <td><input type="text" name="price" value="{{ produit.price }}" /></td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td><textarea name="description">{{ produit.description }}</textarea></td>
+        </tr>
+        <tr>
+            <th>Categorie</th>
+            <td>
+                <select name="categorie">
+                    {% for categorie in categories %}
+                        <option value="{{ categorie.id }}" {% if categorie.id == produit.categorie.id %}selected{% endif %}>{{ categorie.name }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="submit">Edit</button>
+            </td>
+        </tr>
+    </table>
+</form>
+{% endblock %}
+

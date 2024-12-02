@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ produit.name }}{% endblock %}
+
+{% block body %}
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+</style>
+
+<h1>{{ produit.name }}</h1>
+<a href="{{ path('app_produits_admin_new') }}">Add a new product</a>
+<table>
+    <tr>
+        <th>Id</th>
+        <td>{{ produit.id }}</td>
+    </tr>
+    <tr>
+        <th>Name</th>
+        <td>{{ produit.name }}</td>
+    </tr>
+    <tr>
+        <th>Price</th>
+        <td>{{ produit.price }}</td>
+    </tr>
+    <tr>
+        <th>Description</th>
+        <td>{{ produit.description }}</td>
+    </tr>
+    <tr>
+        <th>Actions</th>
+        <td>
+            <a href="{{ path('app_produits_admin_edit', {'id': produit.id}) }}">Edit</a>
+            <a href="{{ path('app_produits_admin_delete', {'id': produit.id}) }}">Delete</a>
+        </td>
+    </tr>
+</table>
+{% endblock %}
+

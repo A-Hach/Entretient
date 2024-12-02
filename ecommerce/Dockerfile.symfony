@@ -1,0 +1,79 @@
+# Use an official PHP 7.4 image as the base
+FROM php:8.2-apache
+
+# Install missing dependencies
+RUN apt-get update && apt-get install -y git unzip
+
+# Install composer
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
+  \
+  &&  apt-get update \
+  &&  apt-get install -y --no-install-recommends \
+  locales apt-utils git libicu-dev g++ libpng-dev libxml2-dev libzip-dev libonig-dev libxslt-dev unzip \
+  \
+  &&  echo "en_US.UTF-8 UTF-8" > /etc/locale.gen  \
+  &&  echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen \
+  &&  locale-gen \
+  \
+  &&  curl -sS https://getcomposer.org/installer | php -- \
+  &&  mv composer.phar /usr/local/bin/composer \
+  \
+  && curl -sL https://deb.nodesource.com/setup_18.x | bash \
+  && apt-get -y install nodejs \
+  \
+  &&  curl -sS https://get.symfony.com/cli/installer | bash \
+  &&  mv /root/.symfony5/bin/symfony /usr/local/bin \
+  \ 
+  &&  docker-php-ext-configure \
+  intl \
+  &&  docker-php-ext-install \
+  pdo pdo_mysql opcache intl zip calendar dom mbstring gd xsl \
+  \
+  &&  pecl install apcu && docker-php-ext-enable apcu
+
+
+# Set the working directory to /app
+WORKDIR /var/www/app
+
+# Copy the application code to the working directory
+COPY --chown=www-data:www-data ./ecommerce /var/www/app/
+
+# Install the dependencies
+#RUN cd /var/www/app && composer install --no-dev --prefer-dist
+COPY ./ecommerce/vhosts/ /etc/apache2/sites-available/
+
+COPY ./ecommerce/apache.conf /etc/apache2/sites-available/000-default.conf
+
+RUN rm -rf /var/www/html && mv /var/www/app /var/www/html &&\
+    find /var/www/html/ -type d -exec chmod 755 {} \; &&\
+    find /var/www/html/ -type f -exec chmod 644 {} \; &&\
+    chmod -R 777 /var/www/html/ && a2enmod rewrite
+RUN /bin/bash -c 'ls -la; chmod +x gitlab-properties-builder.sh; ls -la'
+# Set the environment variables
+# ENV APP_ENV=dev
+# ENV APP_SECRET=71675ccdcc0bc1d7729dbcfdabf8c5a5 
+# ENV DATABASE_URL="mysql://root:@db:3306/ecommerce?serverVersion=8.0.32&charset=utf8mb4"
+# ENV STRIPE_KEY='pk_test_51QQU8yCHLCmYcXatlpJqTNuULkidJ8Y3emDrFElF8GjpEivJwWxS77Srw5djt4Xh00veas9gDK5OeiMvGGdo7kgC00XpLdzNrE'
+# ENV STRIPE_SECRET='sk_test_51QQU8yCHLCmYcXatg8enasF1pTKTtZilsE3pLKMDim5nLGftmrVybIvnRVcJsxMLLX5o02IAx2hGC58ZPrRN4smZ00T0B0M3dq'
+WORKDIR /var/www/html 
+
+RUN php bin/console doctrine:database:create
+RUN php bin/console make:migration
+# RUN php bin/console doctrine:migrations:migrate
+RUN php bin/console doctrine:schema:update --force
+RUN php bin/console doctrine:fixtures:load --verbose --no-interaction
+
+
+USER www-data
+# RUN useradd -ms /bin/bash admin
+# RUN chown -R admin: /var/www/app/
+# RUN chmod -R 755 /var/www/
+# RUN chmod -R 777  /etc/apache2/
+# RUN chmod -R 777  /var/www/app/
+# USER admin
+
+# RUN php bin/console doctrine:database:create
+# RUN php bin/console make:migration
+# RUN php bin/console doctrine:migrations:migrate
+# RUN php bin/console doctrine:schema:update --dump-sql
+
