@@ -45,7 +45,6 @@ class CheckoutScreen extends StatelessWidget {
     const SizedBox(height: 20),
     ElevatedButton(
     onPressed: () async {
-    // Simulate sending order data with a mock API POST request
     if (kDebugMode) {
       print('Order sent: ${cartViewModel.cartItems}');
     }
