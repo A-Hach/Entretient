@@ -1,4 +1,6 @@
-"# Entretient" \n
-to run symfony project run 'docker-compose up -d' \n
-ecommerce => Symfony \n
-products => Flutter
+# Entretient
+
+To run the Symfony project, execute the following command:
+
+```bash
+docker-compose up -d
