@@ -1,5 +1,5 @@
 # Entretient
-modify DATABASE_URL 
+Modify DATABASE_URL  Then
 To run the Symfony project, execute the following command:
 
 ```bash
